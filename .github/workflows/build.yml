@@ -1,37 +1,8 @@
 name: CI
-on: [push, pull_request]
+on:
+  workflow_dispatch:
 
 jobs:
-  ubuntu-latest:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Clone
-        uses: actions/checkout@v1
-
-      - name: Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install build-essential
-
-      - name: Build
-        run: |
-          make
-
-  macOS-latest:
-    runs-on: macOS-latest
-
-    steps:
-      - name: Clone
-        uses: actions/checkout@v1
-
-      - name: Dependencies
-        run: |
-          brew update
-
-      - name: Build
-        run: |
-          make
 
   windows-latest:
     runs-on: windows-latest
@@ -46,6 +17,11 @@ jobs:
           cd build
           cmake ..
           cmake --build . --config Release
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: build
 
 #  ubuntu-latest-gcc:
 #    runs-on: ubuntu-latest
